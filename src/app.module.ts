@@ -10,6 +10,8 @@ import * as fg from 'fast-glob';
 import { REQUEST } from '@nestjs/core';
 import { DefaultPriceCaculator } from './services/price-calculator';
 import { HostnameMiddleware } from './middlewares/hostname';
+import { InMemoryCustomerRepository } from './repositories/customer';
+import { ValidateHostnameMiddleware } from './middlewares/validate-hostname';
 
 @Module({
   imports: [],
@@ -37,10 +39,15 @@ import { HostnameMiddleware } from './middlewares/hostname';
       },
       inject: [REQUEST, ConsoleLogger],
     },
+    {
+      provide: 'CUSTOMER_REPOSITORY',
+      useClass: InMemoryCustomerRepository,
+    },
   ],
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {
     consumer.apply(HostnameMiddleware).forRoutes('/');
+    consumer.apply(ValidateHostnameMiddleware).forRoutes('/');
   }
 }
