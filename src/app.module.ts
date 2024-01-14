@@ -1,9 +1,15 @@
-import { ConsoleLogger, Module, Scope } from '@nestjs/common';
+import {
+  ConsoleLogger,
+  MiddlewareConsumer,
+  Module,
+  Scope,
+} from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import * as fg from 'fast-glob';
 import { REQUEST } from '@nestjs/core';
 import { DefaultPriceCaculator } from './services/price-calculator';
+import { HostnameMiddleware } from './middlewares/hostname';
 
 @Module({
   imports: [],
@@ -33,4 +39,8 @@ import { DefaultPriceCaculator } from './services/price-calculator';
     },
   ],
 })
-export class AppModule {}
+export class AppModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(HostnameMiddleware).forRoutes('/');
+  }
+}
