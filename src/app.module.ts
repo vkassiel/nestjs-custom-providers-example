@@ -9,7 +9,6 @@ import { AppService } from './app.service';
 import * as fg from 'fast-glob';
 import { REQUEST } from '@nestjs/core';
 import { DefaultPriceCaculator } from './services/price-calculator';
-import { HostnameMiddleware } from './middlewares/hostname';
 import { InMemoryCustomerRepository } from './repositories/customer';
 import { ValidateHostnameMiddleware } from './middlewares/validate-hostname';
 
@@ -47,7 +46,6 @@ import { ValidateHostnameMiddleware } from './middlewares/validate-hostname';
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(HostnameMiddleware).forRoutes('/');
     consumer.apply(ValidateHostnameMiddleware).forRoutes('/');
   }
 }

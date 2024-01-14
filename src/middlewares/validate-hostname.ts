@@ -18,6 +18,18 @@ export class ValidateHostnameMiddleware implements NestMiddleware {
   async use(req: Request, res: Response, next: (error?: NextFunction) => void) {
     const { headers } = req;
     const hostname = headers['hostname'];
+    if (!hostname) {
+      throw new HttpException(
+        {
+          url: req.url,
+          statusCode: HttpStatus.BAD_REQUEST,
+          statusMessage: HttpStatus[HttpStatus.BAD_REQUEST],
+          message: `Missing 'hostname' property in the request header`,
+          timestamp: new Date().getTime(),
+        },
+        HttpStatus.BAD_REQUEST,
+      );
+    }
     const customer =
       await this.customerRepository.getCustomerByHostname(hostname);
     if (!customer) {
