@@ -7,6 +7,10 @@ export class InMemoryCustomerRepository implements CustomerRepository {
         name: 'Sky Net',
         hostname: 'skynet',
       },
+      {
+        name: 'Umbrella Corp',
+        hostname: 'umbrellacorp',
+      },
     ] satisfies Customer[];
 
     const customer = CUSTOMERS.find(
